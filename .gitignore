@@ -13,6 +13,9 @@
 *.js
 *.js.map
 
+# Allow API functions for Netlify
+!api/*.js
+
 # IDE and editor files
 .vscode/
 .idea/
