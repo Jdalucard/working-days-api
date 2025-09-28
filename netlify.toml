@@ -1,0 +1,22 @@
+[build]
+  functions = "api"
+  publish = "dist"
+
+[dev]
+  command = "npm run dev"
+  port = 4000
+
+[[redirects]]
+  from = "/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
+[[redirects]]
+  from = "/api/working-days"
+  to = "/.netlify/functions/working-days"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/index"
+  status = 200
