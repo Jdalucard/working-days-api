@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
-import { WORKING_HOURS } from "../const/constants";
-import { HolidayService } from "./holidayService";
+import { WORKING_HOURS } from "../const/constants.js";
+import { HolidayService } from "./holidayService.js";
 
 const COLOMBIA_TIMEZONE = "America/Bogota";
 

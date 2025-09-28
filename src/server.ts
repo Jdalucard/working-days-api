@@ -2,9 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { WorkingDaysController } from "./controllers/workingDaysController";
-import errorHandler from "./middleware/errorHandler";
-import { PORT } from "./const/constants";
+import { WorkingDaysController } from "./controllers/workingDaysController.js";
+import errorHandler from "./middleware/errorHandler.js";
+import { PORT } from "./const/constants.js";
 
 dotenv.config();
 const app = express();

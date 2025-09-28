@@ -2,10 +2,10 @@
   "name": "working-days-api",
   "version": "1.0.0",
   "description": "API for calculating working days and hours in Colombia.",
-  "main": "src/server.ts",
+  "main": "dist/server.js",
   "type": "module",
   "scripts": {
-    "start": "tsx src/server.ts",
+    "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"

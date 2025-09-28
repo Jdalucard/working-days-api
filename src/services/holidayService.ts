@@ -1,5 +1,5 @@
 import axios from "axios";
-import { HOLIDAYS_API_URL, COLOMBIA_HOLIDAYS } from "../const/constants";
+import { HOLIDAYS_API_URL, COLOMBIA_HOLIDAYS } from "../const/constants.js";
 
 export class HolidayService {
   private static holidayCache: string[] | null = null;

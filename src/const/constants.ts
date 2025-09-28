@@ -1,4 +1,4 @@
-import { WorkingHours } from "../types";
+import { WorkingHours } from "../types/index.js";
 
 export const COLOMBIA_TIMEZONE = process.env.COLOMBIA_TIMEZONE ||"America/Bogota";
 export const HOLIDAYS_API_URL =

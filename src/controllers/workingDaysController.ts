@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { DateCalculationService } from "../services/dateCalculationService";
-import { ValidationUtils } from "../utils/validationUtils";
+import { DateCalculationService } from "../services/dateCalculationService.js";
+import { ValidationUtils } from "../utils/validationUtils.js";
 import {
   WorkingDaysRequest,
   WorkingDaysResponse,
   ErrorResponse,
-} from "../types/index";
+} from "../types/index.js";
 
 export class WorkingDaysController {
   constructor() {}

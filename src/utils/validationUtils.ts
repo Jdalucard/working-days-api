@@ -1,4 +1,4 @@
-import { WorkingDaysRequest } from "../types/index";
+import { WorkingDaysRequest } from "../types/index.js";
 
 export class ValidationUtils {
   static validateRequest(query: WorkingDaysRequest): {

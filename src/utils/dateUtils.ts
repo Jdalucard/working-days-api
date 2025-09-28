@@ -1,4 +1,4 @@
-import { WORKING_HOURS } from "../const/constants";
+import { WORKING_HOURS } from "../const/constants.js";
 
 export class DateUtils {
   /**
