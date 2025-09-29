@@ -9,11 +9,16 @@ import { PORT } from "./const/constants.js";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+
+cors();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const workingDaysController = new WorkingDaysController();
+
+app.get("/", (req, res) => {
+  res.send("Working Days API is running");
+});
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK", message: "Service is healthy" });
