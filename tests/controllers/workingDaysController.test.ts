@@ -80,13 +80,15 @@ describe('WorkingDaysController', () => {
     expect(response.body.date).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
   });
 
-  it('should return error for zero values', async () => {
+  it('should accept zero values and return a valid date', async () => {
     const response = await request(app)
       .get('/api/working-days')
       .query({ days: 0 });
 
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('error', 'InvalidParameters');
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('date');
+    expect(typeof response.body.date).toBe('string');
+    expect(response.body.date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$/);
   });
 
   it('should handle both days and hours parameters', async () => {

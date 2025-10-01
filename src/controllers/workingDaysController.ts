@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { DateCalculationService } from "../services/dateCalculationService.js";
-import { ValidationUtils } from "../utils/validationUtils.js";
+import { WorkingDaysSchema, ValidatedWorkingDaysRequest } from "../schemas/workingDaysSchema.js";
 import {
-  WorkingDaysRequest,
   WorkingDaysResponse,
   ErrorResponse,
 } from "../types/index.js";
@@ -15,26 +14,21 @@ export class WorkingDaysController {
     res: Response
   ): Promise<Response> => {
     try {
-      const { days, hours, date } = req.query as WorkingDaysRequest;
-
-      const validation = ValidationUtils.validateRequest({ days, hours, date });
-      if (!validation.isValid) {
+      const validationResult = WorkingDaysSchema.safeParse(req.query);
+      if (!validationResult.success) {
+        const firstIssue = validationResult.error.issues[0];
         const errorResponse: ErrorResponse = {
           error: "InvalidParameters",
-          message: validation.error!,
+          message: firstIssue?.message || "Invalid query parameters.",
         };
         return res.status(400).json(errorResponse);
       }
 
-      const daysNum = days ? Number(days) : 0;
-      const hoursNum = hours ? Number(hours) : 0;
+      const validated = validationResult.data as ValidatedWorkingDaysRequest;
+      const daysNum = validated.days ?? 0;
+      const hoursNum = validated.hours ?? 0;
 
-      let startDate: Date;
-      if (date) {
-        startDate = new Date(date);
-      } else {
-        startDate = new Date();
-      }
+      const startDate: Date = validated.date ? new Date(validated.date) : new Date();
 
       const resultDate = await DateCalculationService.addWorkingTime(
         startDate,
