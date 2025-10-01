@@ -30,9 +30,6 @@ working-days-api/
 │   ├── services/
 │   │   ├── dateCalculationService.ts # Core business logic for date calculations
 │   │   └── holidayService.ts         # Holiday management with API fallback
-│   ├── utils/
-│   │   ├── dateUtils.ts             # Date manipulation utilities
-│   │   └── validationUtils.ts       # Input validation utilities
 │   ├── types/
 │   │   └── index.ts                 # TypeScript interfaces and types
 │   ├── middleware/
