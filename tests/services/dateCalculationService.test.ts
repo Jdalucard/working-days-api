@@ -86,8 +86,8 @@ describe("DateCalculationService", () => {
       const start = DateTime.fromISO("2025-01-15T10:00:00", { zone: TZ }).toJSDate(); // Miércoles
       const result = await DateCalculationService.addWorkingTime(start, 1, 0);
       
-      // El resultado real es que mantiene la hora de inicio (10:00 AM) al agregar días
-      const expected = bogotaToUtcDate("2025-01-16T10:00:00"); // Jueves
+      // El servicio normaliza al inicio del día laboral (8:00 AM) al agregar días
+      const expected = bogotaToUtcDate("2025-01-16T08:00:00"); // Jueves 8:00 AM
       expect(result.toISOString()).toBe(expected.toISOString());
     });
 
@@ -95,8 +95,8 @@ describe("DateCalculationService", () => {
       const start = DateTime.fromISO("2025-01-17T10:00:00", { zone: TZ }).toJSDate(); // Viernes
       const result = await DateCalculationService.addWorkingTime(start, 1, 0);
       
-      // El resultado real es que mantiene la hora de inicio (10:00 AM) al agregar días
-      const expected = bogotaToUtcDate("2025-01-20T10:00:00"); // Lunes
+      // El servicio normaliza al inicio del día laboral (8:00 AM) al agregar días
+      const expected = bogotaToUtcDate("2025-01-20T08:00:00"); // Lunes 8:00 AM
       expect(result.toISOString()).toBe(expected.toISOString());
     });
 
@@ -104,8 +104,8 @@ describe("DateCalculationService", () => {
       const start = DateTime.fromISO("2024-12-31T10:00:00", { zone: TZ }).toJSDate(); // 31 dic (martes laboral)
       const result = await DateCalculationService.addWorkingTime(start, 1, 0);
       
-      // 1 enero es festivo, debe ir al 2 enero manteniendo la hora (10:00 AM)
-      const expected = bogotaToUtcDate("2025-01-02T10:00:00");
+      // 1 enero es festivo, debe ir al 2 enero normalizando al inicio del día (8:00 AM)
+      const expected = bogotaToUtcDate("2025-01-02T08:00:00");
       expect(result.toISOString()).toBe(expected.toISOString());
     });
   });
@@ -143,8 +143,8 @@ describe("DateCalculationService", () => {
       const start = DateTime.fromISO("2025-01-15T10:00:00", { zone: TZ }).toJSDate();
       const result = await DateCalculationService.addWorkingTime(start, 1.25, 0);
       
-      // 1 día completo + 2 horas (0.25 * 8 horas) = siguiente día 8:00 AM + 2h (+1h almuerzo) = 12:00 PM
-      const expected = bogotaToUtcDate("2025-01-16T12:00:00");
+      // 1 día completo normaliza a 8:00 AM + 2 horas (0.25 * 8) = 10:00 AM
+      const expected = bogotaToUtcDate("2025-01-16T10:00:00");
       expect(result.toISOString()).toBe(expected.toISOString());
     });
 
@@ -152,8 +152,8 @@ describe("DateCalculationService", () => {
       const start = DateTime.fromISO("2025-01-15T10:00:00", { zone: TZ }).toJSDate();
       const result = await DateCalculationService.addWorkingTime(start, 1.25, 1);
       
-      // 1 día + 2 horas (fraccionario) + 1 hora = siguiente día 8:00 + 2h + 1h (+1h almuerzo) = 13:00
-      const expected = bogotaToUtcDate("2025-01-16T14:00:00");
+      // 1 día normaliza a 8:00 AM + 2 horas (0.25*8) + 1 hora = 11:00 AM
+      const expected = bogotaToUtcDate("2025-01-16T11:00:00");
       expect(result.toISOString()).toBe(expected.toISOString());
     });
 
@@ -199,9 +199,9 @@ describe("DateCalculationService", () => {
       const start = DateTime.fromISO("2024-12-30T10:00:00", { zone: TZ }).toJSDate(); // Lunes
       const result = await DateCalculationService.addWorkingTime(start, 3, 0);
       
-      // El resultado esperado es mantener la hora de inicio 10:00 AM según el comportamiento observado
-      // 2025-01-03T15:00:00.000Z = 2025-01-03T10:00:00 en Bogotá
-      expect(result.toISOString()).toBe("2025-01-03T15:00:00.000Z");
+      // Al agregar 3 días laborales, normaliza al inicio del día (8:00 AM)
+      // 2025-01-03T13:00:00.000Z = 2025-01-03T08:00:00 en Bogotá
+      expect(result.toISOString()).toBe("2025-01-03T13:00:00.000Z");
     });
 
     test("debe manejar cálculo de muchas horas cruzando múltiples días", async () => {
