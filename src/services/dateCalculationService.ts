@@ -5,11 +5,7 @@ import { HolidayService } from "./holidayService.js";
 const COLOMBIA_TIMEZONE = "America/Bogota";
 
 export class DateCalculationService {
-  static async addWorkingTime(
-    startDate: Date,
-    days: number = 0,
-    hours: number = 0
-  ): Promise<Date> {
+  static async addWorkingTime(startDate: Date, days: number = 0, hours: number = 0): Promise<Date> {
     const colombiaDate = DateTime.fromJSDate(startDate, {
       zone: COLOMBIA_TIMEZONE,
     });
@@ -18,38 +14,26 @@ export class DateCalculationService {
 
     let workingDate = this.normalizeToWorkingTime(colombiaDate, holidays);
 
-
     const workingDayHours =
-      WORKING_HOURS.end -
-      WORKING_HOURS.start -
-      (WORKING_HOURS.lunchEnd - WORKING_HOURS.lunchStart);
+      WORKING_HOURS.end - WORKING_HOURS.start - (WORKING_HOURS.lunchEnd - WORKING_HOURS.lunchStart);
 
     const wholeDays = Math.trunc(days);
     const fractionalDays = days - wholeDays;
     const hoursFromFractionalDays = fractionalDays * workingDayHours;
 
-
     if (wholeDays > 0) {
       workingDate = await this.addWorkingDays(workingDate, wholeDays, holidays);
     }
 
-  
     const totalHoursToAdd = hours + hoursFromFractionalDays;
     if (totalHoursToAdd > 0) {
-      workingDate = await this.addWorkingHours(
-        workingDate,
-        totalHoursToAdd,
-        holidays
-      );
+      workingDate = await this.addWorkingHours(workingDate, totalHoursToAdd, holidays);
     }
 
     return workingDate.toUTC().toJSDate();
   }
 
-  private static normalizeToWorkingTime(
-    date: DateTime,
-    holidays: string[]
-  ): DateTime {
+  private static normalizeToWorkingTime(date: DateTime, holidays: string[]): DateTime {
     let normalizedDate = date;
 
     while (this.isNonWorkingDay(normalizedDate, holidays)) {
@@ -86,10 +70,7 @@ export class DateCalculationService {
           millisecond: 0,
         });
       }
-    } else if (
-      hour >= WORKING_HOURS.lunchStart &&
-      hour < WORKING_HOURS.lunchEnd
-    ) {
+    } else if (hour >= WORKING_HOURS.lunchStart && hour < WORKING_HOURS.lunchEnd) {
       normalizedDate = normalizedDate.set({
         hour: WORKING_HOURS.lunchEnd,
         minute: 0,
@@ -121,10 +102,8 @@ export class DateCalculationService {
     let addedDays = 0;
 
     while (addedDays < daysToAdd) {
-      // Move to next day
       resultDate = resultDate.plus({ days: 1 });
 
-      // Skip weekends and holidays
       while (this.isNonWorkingDay(resultDate, holidays)) {
         resultDate = resultDate.plus({ days: 1 });
       }
@@ -183,7 +162,6 @@ export class DateCalculationService {
       }
 
       if (hour >= WORKING_HOURS.lunchStart && hour < WORKING_HOURS.lunchEnd) {
-
         resultDate = resultDate.set({
           hour: WORKING_HOURS.lunchEnd,
           minute: 0,
@@ -193,7 +171,6 @@ export class DateCalculationService {
         continue;
       }
 
-   
       resultDate = resultDate.plus({ minutes: 1 });
       remainingMinutes -= 1;
     }

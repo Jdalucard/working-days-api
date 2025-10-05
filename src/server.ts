@@ -36,9 +36,8 @@ if (process.env.NODE_ENV !== "test") {
     console.log(`API endpoint: http://${HOST}:${PORT}/api/working-days`);
   });
 
-  // Increase timeouts for slow networks/proxies
-  server.keepAliveTimeout = 120000; // 120s
-  server.headersTimeout = 120000;   // 120s
+  server.keepAliveTimeout = 120000; 
+  server.headersTimeout = 120000;   
 }
 
 export default app;

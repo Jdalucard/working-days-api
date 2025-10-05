@@ -1,18 +1,12 @@
 import { Request, Response } from "express";
 import { DateCalculationService } from "../services/dateCalculationService.js";
 import { WorkingDaysSchema, ValidatedWorkingDaysRequest } from "../schemas/workingDaysSchema.js";
-import {
-  WorkingDaysResponse,
-  ErrorResponse,
-} from "../types/index.js";
+import { WorkingDaysResponse, ErrorResponse } from "../types/index.js";
 
 export class WorkingDaysController {
   constructor() {}
 
-  public calculateWorkingDays = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
+  public calculateWorkingDays = async (req: Request, res: Response): Promise<Response> => {
     try {
       const validationResult = WorkingDaysSchema.safeParse(req.query);
       if (!validationResult.success) {
@@ -30,16 +24,14 @@ export class WorkingDaysController {
 
       const startDate: Date = validated.date ? new Date(validated.date) : new Date();
 
-      const resultDate = await DateCalculationService.addWorkingTime(
-        startDate,
-        daysNum,
-        hoursNum
-      );
+      const resultDate = await DateCalculationService.addWorkingTime(startDate, daysNum, hoursNum);
+
+  
+      const dateString = resultDate.toISOString();
 
       const response: WorkingDaysResponse = {
-        date: resultDate.toISOString(),
+        date: dateString,
       };
-
       return res.status(200).json(response);
     } catch (error) {
       console.error("Error calculating working days:", error);

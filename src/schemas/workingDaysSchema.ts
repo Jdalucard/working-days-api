@@ -4,8 +4,7 @@ export const WorkingDaysSchema = z
   .object({
     days: z.coerce
       .number()
-      .int()
-      .min(0, "Days must be a non-negative integer.")
+      .min(0, "Days must be a non-negative number.")
       .optional(),
     hours: z.coerce
       .number()
